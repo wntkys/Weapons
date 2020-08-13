@@ -1,5 +1,6 @@
 local Cooldown = {}
 local SniperOrigin = {}
+local NukerOrigin = {}
 
 function Initialize(Plugin)
 	Plugin:SetName(g_PluginInfo.Name)
@@ -8,6 +9,8 @@ function Initialize(Plugin)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_RIGHT_CLICK, OnPlayerRightClick)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_ANIMATION, OnPlayerAnimation)
 	cPluginManager:AddHook(cPluginManager.HOOK_PROJECTILE_HIT_ENTITY, OnProjectileHitEntity)
+	cPluginManager:AddHook(cPluginManager.HOOK_PROJECTILE_HIT_BLOCK, OnProjectileHitBlock)
+	
 
 	dofile(cPluginManager:GetPluginsPath() .. "/InfoReg.lua")
 	RegisterPluginInfoCommands()
@@ -88,11 +91,10 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		end
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker" then
-		World:CreateProjectile(PX, PY + 0.9, PZ + 0.5, cProjectileEntity.pkGhastFireball, Player, Weapon, Player:GetLookVector() * 60)
-		World:CreateProjectile(PX, PY + 0.9, PZ + 0.5, cProjectileEntity.pkGhastFireball, Player, Weapon, Player:GetLookVector() * 50)
-		World:CreateProjectile(PX, PY + 0.9, PZ + 0.5, cProjectileEntity.pkGhastFireball, Player, Weapon, Player:GetLookVector() * 40)
+		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("entity.ghast.shoot", Player:GetPosition(), 0.9, 1.5) 
 		World:BroadcastSoundEffect("entity.bat.takeoff", Player:GetPosition(), 0.8, 2)
+		NukerOrigin[Player:GetUniqueID()] = true
 		Cooldown[Player:GetUUID()] = true
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
@@ -109,6 +111,14 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 			World:CastThunderbolt(Vector3i(LookPos.x, LookPos.y, LookPos.z))
 		end
 		return true
+	end
+end
+
+function OnProjectileHitBlock(ProjectileEntity, Block)
+	local World = ProjectileEntity:GetWorld()
+	if NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] then
+		World:SetBlock(Block:GetPosX, Block:GetPosY, Block:GetPosZ, 152, nil)
+		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = nil
 	end
 end
 
