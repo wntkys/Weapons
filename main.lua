@@ -117,7 +117,7 @@ end
 function OnProjectileHitBlock(ProjectileEntity, Block)
 	local World = ProjectileEntity:GetWorld()
 	if NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] then
-		World:SetBlock(Block:GetPosX, Block:GetPosY, Block:GetPosZ, 152, nil)
+		World:SetBlock(Block:GetPosX(), Block:GetPosY(), Block:GetPosZ(), 152, nil)
 		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = nil
 	end
 end
