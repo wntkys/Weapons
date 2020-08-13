@@ -124,7 +124,7 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 end
 
 function BigBoom(Position)
-	World:DoExplosionAt(4, Position:x, Position:y, Position:z, true, 4)
+	World:DoExplosionAt(4, Position.x, Position.y, Position.z, true, 4)
 end
 
 function OnProjectileHitEntity(ProjectileEntity, Entity)
