@@ -66,6 +66,7 @@ function OnPlayerAnimation(Player, Animation)
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 1.0, 63)
 		SniperOrigin[Player:GetUniqueID()] = true
+		Cooldown[Player:GetUUID()] = true
 	end
 end
 
@@ -89,9 +90,9 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker" then
 		World:CreateProjectile(PX, PY + 0.9, PZ + 0.5, cProjectileEntity.pkGhastFireball, Player, Weapon, Player:GetLookVector() * 60)
-		World:DoExplosionAt(4, LookPos.x, LookPos.y, LookPos.z, true, 4)
-		World:BroadcastSoundEffect("entity.ghast.shoot", Player:GetPosition(), 0.9, 1.5) 
-		World:BroadcastSoundEffect("entity.bat.takeoff", Player:GetPosition(), 0.8, 2)
+		--World:DoExplosionAt(4, LookPos.x, LookPos.y, LookPos.z, true, 4)
+		--World:BroadcastSoundEffect("entity.ghast.shoot", Player:GetPosition(), 0.9, 1.5) 
+		--World:BroadcastSoundEffect("entity.bat.takeoff", Player:GetPosition(), 0.8, 2)
 		Cooldown[Player:GetUUID()] = true
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
