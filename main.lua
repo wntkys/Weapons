@@ -118,7 +118,7 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 	local World = ProjectileEntity:GetWorld()
 	if NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] then
 		World:SetBlock(ProjectileEntity:GetPosX(), ProjectileEntity:GetPosY(), ProjectileEntity:GetPosZ(), 152, 0)
-		World:BroadcastParticleEffect("lava_particle", ProjectileEntity:GetPosition(), Vector3f(5.0, 5.0, 5.0), 1, 500)
+		World:BroadcastParticleEffect("lava_particle", Vector3f(ProjectileEntity:GetPosX(),ProjectileEntity:GetPosY(),ProjectileEntity:GetPosZ()), Vector3f(5.0, 5.0, 5.0), 1, 500)
 		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
 		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = nil
 	end
