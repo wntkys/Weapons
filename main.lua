@@ -1,6 +1,6 @@
 local Cooldown = {}
-local SniperBulletID = {}
-local NukerBulletID = {}
+local SniperOrigin  = {}
+local NukerOrigin = {}
 
 function Initialize(Plugin)
 	Plugin:SetName(g_PluginInfo.Name)
@@ -66,9 +66,9 @@ function OnPlayerAnimation(Player, Animation)
 	local Weapon = Player:GetEquippedItem()
 	local World = Player:GetWorld()
 	if Animation == 0 and Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
-		local Projectile = World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
+		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
-		SniperBulletID[Player:GetUniqueID()] = true
+		SniperOrigin [Player:GetUniqueID()] = true
 	end
 end
 
@@ -91,10 +91,10 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		end
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker" then
-		local Projectile = World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
+		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("entity.enderman.scream", Player:GetPosition(), 10, 1.5) 
 		World:BroadcastSoundEffect("entity.bat.takeoff", Player:GetPosition(), 0.8, 2)
-		NukerBulletID[projectile:GetUniqueID()] = true
+		NukerOrigin[projectile:GetUniqueID()] = true
 		Cooldown[Player:GetUUID()] = true
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
@@ -116,10 +116,10 @@ end
 
 function OnProjectileHitBlock(ProjectileEntity, Block)
 	local World = ProjectileEntity:GetWorld()
-	if NukerBulletID[ProjectileEntity:GetUniqueID()] then
+	if NukerOrigin[ProjectileEntity:GetUniqueID()] then
 		World:SetBlock(ProjectileEntity:GetPosX(), ProjectileEntity:GetPosY(), ProjectileEntity:GetPosZ(), 152, 0)
 		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
-		NukerBulletID[ProjectileEntity:GetUniqueID()] = nil
+		NukerOrigin[ProjectileEntity:GetUniqueID()] = nil
 	end
 end
 
@@ -128,9 +128,9 @@ function BigBoom(Position, World)
 end
 
 function OnProjectileHitEntity(ProjectileEntity, Entity)
-	if SniperBulletID[ProjectileEntity:GetUniqueID()] then
+	if SniperOrigin [ProjectileEntity:GetUniqueID()] then
 		Entity:TakeDamage(dtArrow, etPlayer, 10, 3)
-		SniperBulletID[ProjectileEntity:GetUniqueID()] = nil
+		SniperOrigin [ProjectileEntity:GetUniqueID()] = nil
 	end
 end
 
