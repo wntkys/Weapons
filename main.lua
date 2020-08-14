@@ -95,7 +95,7 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)
 		if NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] then
 			NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = 0
-		else then
+		else 
 			NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] + 1
 		end
 		
