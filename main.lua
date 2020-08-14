@@ -95,9 +95,8 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)
 		if NukerOrigin[Player:GetUniqueID()] == nil then
 			NukerOrigin[Player:GetUniqueID()] = 0
-		else 
-			NukerOrigin[Player:GetUniqueID()] = NukerOrigin[Player:GetUniqueID()] + 1
 		end
+		NukerOrigin[Player:GetUniqueID()] = NukerOrigin[Player:GetUniqueID()] + 1
 		
 		Cooldown[Player:GetUUID()] = true
 		return true
