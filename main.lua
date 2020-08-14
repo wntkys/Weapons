@@ -1,6 +1,7 @@
 local Cooldown = {}
 local SniperOrigin  = {}
-local NukerOrigin = {}
+local TntCache = {}
+--local NukerOrigin = {}
 
 function Initialize(Plugin)
 	Plugin:SetName(g_PluginInfo.Name)
@@ -9,7 +10,7 @@ function Initialize(Plugin)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_RIGHT_CLICK, OnPlayerRightClick)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_ANIMATION, OnPlayerAnimation)
 	cPluginManager:AddHook(cPluginManager.HOOK_PROJECTILE_HIT_ENTITY, OnProjectileHitEntity)
-	cPluginManager:AddHook(cPluginManager.HOOK_PROJECTILE_HIT_BLOCK, OnProjectileHitBlock)
+	--cPluginManager:AddHook(cPluginManager.HOOK_PROJECTILE_HIT_BLOCK, OnProjectileHitBlock)
 	
 
 	dofile(cPluginManager:GetPluginsPath() .. "/InfoReg.lua")
@@ -66,6 +67,7 @@ function OnPlayerAnimation(Player, Animation)
 	local Weapon = Player:GetEquippedItem()
 	local World = Player:GetWorld()
 	if Animation == 0 and Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
+		
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
 		SniperOrigin [Player:GetUniqueID()] = true
@@ -91,12 +93,16 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		end
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker"  then --and not(NukerOrigin[Player:GetUniqueID])
-		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
+		--World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
+		local Tnt = World:SpawnPrimedTNT(Player:GetPosition(),400,0,true)
+		TntCache[Tnt] = Player:GetLookVector() * 80
+		World:DoWithEntityByID(Tnt, TntSpeedCalc)
 		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)
+		--[=[
 		if NukerOrigin[Player:GetUniqueID()] == nil then
 			NukerOrigin[Player:GetUniqueID()] = 0
 		end
-		NukerOrigin[Player:GetUniqueID()] = NukerOrigin[Player:GetUniqueID()] + 1
+		NukerOrigin[Player:GetUniqueID()] = NukerOrigin[Player:GetUniqueID()] + 1]=]--
 		
 		Cooldown[Player:GetUUID()] = true
 		return true
@@ -117,6 +123,12 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 	end
 end
 
+function TntSpeedCalc(Entity)
+	local Id = Entity:GetUniqueID()
+	local Vec = TntCache[Id]
+	Entity:AddSpeed(Vec)
+end
+--[==[
 function OnProjectileHitBlock(ProjectileEntity, Block)
 	local World = ProjectileEntity:GetWorld()
 	if not(NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] == nil) and NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] > 0 then
@@ -128,7 +140,7 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] - 1
 	end
 end
-
+--]==]
 function BigBoom(Position, World)
 	World:DoExplosionAt(4, Position.x, Position.y, Position.z, true, 4)
 end
