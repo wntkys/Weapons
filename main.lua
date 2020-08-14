@@ -95,7 +95,7 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker"  then --and not(NukerOrigin[Player:GetUniqueID])
 		--World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		local Tnt = World:SpawnPrimedTNT(Player:GetPosition(),80,0,true)
-		TntCache[Tnt] = Player:GetLookVector() * 80
+		TntCache[Tnt] = Player:GetLookVector() * 40
 		World:DoWithEntityByID(Tnt, TntSpeedCalc)
 		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)
 		--[=[
