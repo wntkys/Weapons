@@ -94,7 +94,7 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("entity.enderman.scream", Player:GetPosition(), 10, 1.5) 
 		World:BroadcastSoundEffect("entity.bat.takeoff", Player:GetPosition(), 0.8, 2)
-		NukerOrigin[projectile:GetUniqueID()] = true
+		NukerOrigin[Player:GetUniqueID()] = true
 		Cooldown[Player:GetUUID()] = true
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
@@ -116,10 +116,10 @@ end
 
 function OnProjectileHitBlock(ProjectileEntity, Block)
 	local World = ProjectileEntity:GetWorld()
-	if NukerOrigin[ProjectileEntity:GetUniqueID()] then
+	if NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] then
 		World:SetBlock(ProjectileEntity:GetPosX(), ProjectileEntity:GetPosY(), ProjectileEntity:GetPosZ(), 152, 0)
 		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
-		NukerOrigin[ProjectileEntity:GetUniqueID()] = nil
+		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = nil
 	end
 end
 
@@ -128,9 +128,9 @@ function BigBoom(Position, World)
 end
 
 function OnProjectileHitEntity(ProjectileEntity, Entity)
-	if SniperOrigin [ProjectileEntity:GetUniqueID()] then
+	if SniperOrigin [ProjectileEntity:GetCreatorUniqueID()] then
 		Entity:TakeDamage(dtArrow, etPlayer, 10, 3)
-		SniperOrigin [ProjectileEntity:GetUniqueID()] = nil
+		SniperOrigin [ProjectileEntity:GetCreatorUniqueID()] = nil
 	end
 end
 
