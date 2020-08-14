@@ -90,10 +90,9 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 			end
 		end
 		return true
-	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker" and not(NukerOrigin[Player:GetUniqueID]) then
+	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker"  then --and not(NukerOrigin[Player:GetUniqueID])
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
-		World:BroadcastSoundEffect("entity.enderman.scream", Player:GetPosition(), 10, 1.5) 
-		World:BroadcastSoundEffect("entity.bat.takeoff", Player:GetPosition(), 0.8, 2)
+		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)
 		NukerOrigin[Player:GetUniqueID()] = true
 		Cooldown[Player:GetUUID()] = true
 		return true
@@ -119,7 +118,7 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 	if NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] then
 		World:SetBlock(ProjectileEntity:GetPosX(), ProjectileEntity:GetPosY(), ProjectileEntity:GetPosZ(), 89, 0)
 		World:BroadcastParticleEffect("mob_portal", Vector3f(ProjectileEntity:GetPosX(),ProjectileEntity:GetPosY(),ProjectileEntity:GetPosZ()), Vector3f(5.0, 5.0, 5.0), 1, 500)
-		World:BroadcastSoundEffect("entity.blaze.death",ProjectileEntity:GetPosition(), 5.0, 10)
+		World:BroadcastSoundEffect("entity.creeper.primed",ProjectileEntity:GetPosition(), 5.0, 10)
 
 		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
 		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = nil
