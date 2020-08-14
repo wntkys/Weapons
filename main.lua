@@ -1,6 +1,6 @@
 local Cooldown = {}
-local SniperOrigin = {}
-local NukerOrigin = {}
+local SniperBulletID = {}
+local NukerBulletID = {}
 
 function Initialize(Plugin)
 	Plugin:SetName(g_PluginInfo.Name)
@@ -67,7 +67,7 @@ function OnPlayerAnimation(Player, Animation)
 	local World = Player:GetWorld()
 	if Animation == 0 and Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
-		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 1.0, 63)
+		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
 		SniperOrigin[Player:GetUniqueID()] = true
 	end
 end
