@@ -97,7 +97,7 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 			NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = 0
 		end
 		
-		else
+		else then
 			NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] + 1
 		end
 		
