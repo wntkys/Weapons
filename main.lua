@@ -119,7 +119,7 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 	if NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] then
 		World:SetBlock(ProjectileEntity:GetPosX(), ProjectileEntity:GetPosY(), ProjectileEntity:GetPosZ(), 152, 0)
 		World:BroadcastParticleEffect("mob_portal", Vector3f(ProjectileEntity:GetPosX(),ProjectileEntity:GetPosY(),ProjectileEntity:GetPosZ()), Vector3f(5.0, 5.0, 5.0), 1, 500)
-		World:BroadcastSoundEffect("block.piston.contract",ProjectileEntity:GetPosition(), 10.0, 61)
+		World:BroadcastSoundEffect("block.piston.contract",ProjectileEntity:GetPosition(), 100.0, 10)
 
 		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
 		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = nil
