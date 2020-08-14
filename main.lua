@@ -68,7 +68,7 @@ function OnPlayerAnimation(Player, Animation)
 	if Animation == 0 and Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
-		SniperOrigin [Player:GetUniqueID()] = true
+		SniperOrigin [Player:GetUUID()] = true
 	end
 end
 
@@ -94,7 +94,7 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("entity.enderman.scream", Player:GetPosition(), 10, 1.5) 
 		World:BroadcastSoundEffect("entity.bat.takeoff", Player:GetPosition(), 0.8, 2)
-		NukerOrigin[Player:GetUniqueID()] = true
+		NukerOrigin[Player:GetUUID()] = true
 		Cooldown[Player:GetUUID()] = true
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
