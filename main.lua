@@ -93,7 +93,7 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker"  then --and not(NukerOrigin[Player:GetUniqueID])
 		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)
-		NukerOrigin[Player:GetUniqueID()] += 1
+		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] + 1
 		Cooldown[Player:GetUUID()] = true
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
@@ -121,7 +121,7 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 		World:BroadcastSoundEffect("entity.endermen.death",ProjectileEntity:GetPosition(), 5.0, 10)
 
 		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
-		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] -= 1
+		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] - 1
 	end
 end
 
