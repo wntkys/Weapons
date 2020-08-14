@@ -122,7 +122,7 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 	if not(NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] == nil) and NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] > 0 then
 		World:SetBlock(ProjectileEntity:GetPosX(), ProjectileEntity:GetPosY(), ProjectileEntity:GetPosZ(), 89, 0)
 		World:BroadcastParticleEffect("mob_portal", Vector3f(ProjectileEntity:GetPosX(),ProjectileEntity:GetPosY(),ProjectileEntity:GetPosZ()), Vector3f(2.0, 2.0, 2.0), 0.2, 500)
-		World:BroadcastSoundEffect("entity.endermen.death",ProjectileEntity:GetPosition(), 5.0, 10)
+		World:BroadcastSoundEffect("entity.slime.squish",ProjectileEntity:GetPosition(), 5.0, 10)
 
 		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
 		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] - 1
