@@ -1,9 +1,9 @@
 g_PluginInfo =
 {
 	Name = "Weapons",
-	Version = "1",
+	Version = "4",
 	Date = "2017-11-25",
-	SourceLocation = "https://github.com/wntkys/Weapons",
+	SourceLocation = "https://github.com/mathiascode/Weapons",
 	Description = [[Plugin that adds weapons to a Cuberite server. Currently available weapons are Anvil Dropper, Lightning Stick, Nuker and Sniper.]],
 
 	Commands =
