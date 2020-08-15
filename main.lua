@@ -8,7 +8,6 @@ function Initialize(Plugin)
 	Plugin:SetVersion(g_PluginInfo.Version)
 
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_RIGHT_CLICK, OnPlayerRightClick)
-	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_ANIMATION, OnPlayerAnimation)
 	
 
 	dofile(cPluginManager:GetPluginsPath() .. "/InfoReg.lua")
@@ -58,20 +57,6 @@ function GetPlayerLookPos(Player)
 	return HitCoords
 end
 
-function OnPlayerAnimation(Player, Animation)
-	local PX = Player:GetPosX()
-	local PY = Player:GetPosY()
-	local PZ = Player:GetPosZ()
-	local Weapon = Player:GetEquippedItem()
-	local World = Player:GetWorld()
-	if Animation == 0 and Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
-		
-		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkArrow, Player, Weapon, Player:GetLookVector() * 80)
-		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
-		SniperOrigin [Player:GetUniqueID()] = true
-	end
-end
-
 function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, CursorY, CursorZ)
 	local LookPos = GetPlayerLookPos(Player)
 	local PX = Player:GetPosX()
@@ -82,6 +67,11 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 	if Cooldown[Player:GetUUID()] then
 		Cooldown[Player:GetUUID()] = nil
 		return true
+	end
+	if Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
+		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkArrow, Player, Weapon, Player:GetLookVector() * 80)
+		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
+		SniperOrigin [Player:GetUniqueID()] = true	
 	end
 	if Weapon.m_ItemType == E_BLOCK_ANVIL and Weapon.m_CustomName == "§8Anvil Dropper" then
 		for x = -1, 4, 1 do
