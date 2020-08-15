@@ -68,7 +68,7 @@ function OnPlayerAnimation(Player, Animation)
 	local World = Player:GetWorld()
 	if Animation == 0 and Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
 		
-		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
+		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkArrow, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
 		SniperOrigin [Player:GetUniqueID()] = true
 	end
@@ -106,13 +106,6 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		
 		Cooldown[Player:GetUUID()] = true
 		return true
-	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
-		if not Player:HasEntityEffect(2) then
-			Player:AddEntityEffect(2, 90000, 7)
-		else
-			Player:RemoveEntityEffect(2)
-		end
-		return true
 	elseif Weapon.m_ItemType == E_ITEM_STICK and Weapon.m_CustomName == "§fLightning Stick" then
 		if LookPos == nil then
 			World:CastThunderbolt(Vector3i(PX, PY, PZ))
@@ -140,7 +133,6 @@ function OnProjectileHitBlock(ProjectileEntity, Block)
 		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] - 1
 	end
 end
---]==]
 function BigBoom(Position, World)
 	World:DoExplosionAt(4, Position.x, Position.y, Position.z, true, 4)
 end
@@ -151,7 +143,7 @@ function OnProjectileHitEntity(ProjectileEntity, Entity)
 		SniperOrigin [ProjectileEntity:GetCreatorUniqueID()] = nil
 	end
 end
-
+--]==]
 function OnDisable()
 	LOG("Disabled " .. cPluginManager:GetCurrentPlugin():GetName() .. "!")
 end
