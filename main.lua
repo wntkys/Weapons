@@ -9,8 +9,6 @@ function Initialize(Plugin)
 
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_RIGHT_CLICK, OnPlayerRightClick)
 	cPluginManager:AddHook(cPluginManager.HOOK_PLAYER_ANIMATION, OnPlayerAnimation)
-	cPluginManager:AddHook(cPluginManager.HOOK_PROJECTILE_HIT_ENTITY, OnProjectileHitEntity)
-	--cPluginManager:AddHook(cPluginManager.HOOK_PROJECTILE_HIT_BLOCK, OnProjectileHitBlock)
 	
 
 	dofile(cPluginManager:GetPluginsPath() .. "/InfoReg.lua")
@@ -68,7 +66,7 @@ function OnPlayerAnimation(Player, Animation)
 	local World = Player:GetWorld()
 	if Animation == 0 and Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
 		
-		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
+		World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkArrow, Player, Weapon, Player:GetLookVector() * 80)
 		World:BroadcastSoundEffect("block.piston.contract", Player:GetPosition(), 10.0, 63)
 		SniperOrigin [Player:GetUniqueID()] = true
 	end
@@ -92,26 +90,12 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 			end
 		end
 		return true
-	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker"  then --and not(NukerOrigin[Player:GetUniqueID])
-		--World:CreateProjectile(PX, PY + 1.5, PZ, cProjectileEntity.pkSnowball, Player, Weapon, Player:GetLookVector() * 80)
+	elseif Weapon.m_ItemType == E_ITEM_BLAZE_ROD and Weapon.m_CustomName == "§6Nuker"  then
 		local Tnt = World:SpawnPrimedTNT(Player:GetPosition(),80,0,true)
 		TntCache[Tnt] = Player:GetLookVector() * 40
 		World:DoWithEntityByID(Tnt, TntSpeedCalc)
-		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)
-		--[=[
-		if NukerOrigin[Player:GetUniqueID()] == nil then
-			NukerOrigin[Player:GetUniqueID()] = 0
-		end
-		NukerOrigin[Player:GetUniqueID()] = NukerOrigin[Player:GetUniqueID()] + 1]=]--
-		
+		World:BroadcastSoundEffect("entity.creeper.primed", Player:GetPosition(), 0.8, 2)		
 		Cooldown[Player:GetUUID()] = true
-		return true
-	elseif Weapon.m_ItemType == E_ITEM_IRON_HORSE_ARMOR and Weapon.m_CustomName == "§7Sniper" then
-		if not Player:HasEntityEffect(2) then
-			Player:AddEntityEffect(2, 90000, 7)
-		else
-			Player:RemoveEntityEffect(2)
-		end
 		return true
 	elseif Weapon.m_ItemType == E_ITEM_STICK and Weapon.m_CustomName == "§fLightning Stick" then
 		if LookPos == nil then
@@ -127,29 +111,6 @@ function TntSpeedCalc(Entity)
 	local Id = Entity:GetUniqueID()
 	local Vec = TntCache[Id]
 	Entity:AddSpeed(Vec)
-end
---[==[
-function OnProjectileHitBlock(ProjectileEntity, Block)
-	local World = ProjectileEntity:GetWorld()
-	if not(NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] == nil) and NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] > 0 then
-		World:SetBlock(ProjectileEntity:GetPosX(), ProjectileEntity:GetPosY(), ProjectileEntity:GetPosZ(), 89, 0)
-		World:BroadcastParticleEffect("mob_portal", Vector3f(ProjectileEntity:GetPosX(),ProjectileEntity:GetPosY(),ProjectileEntity:GetPosZ()), Vector3f(2.0, 2.0, 2.0), 0.2, 500)
-		World:BroadcastSoundEffect("entity.slime.squish",ProjectileEntity:GetPosition(), 5.0, 10)
-
-		--World:ScheduleTask(200, BigBoom(ProjectileEntity:GetPosition()))
-		NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] = NukerOrigin[ProjectileEntity:GetCreatorUniqueID()] - 1
-	end
-end
---]==]
-function BigBoom(Position, World)
-	World:DoExplosionAt(4, Position.x, Position.y, Position.z, true, 4)
-end
-
-function OnProjectileHitEntity(ProjectileEntity, Entity)
-	if SniperOrigin [ProjectileEntity:GetCreatorUniqueID()] then
-		Entity:TakeDamage(dtArrow, etPlayer, 10, 3)
-		SniperOrigin [ProjectileEntity:GetCreatorUniqueID()] = nil
-	end
 end
 
 function OnDisable()
